@@ -1,0 +1,38 @@
+// Main.cpp : Defines the entry point for the console application.
+//
+
+
+// PARA DESLIGAR O GALILEO USAR ESTE COMANDO/ for shutdown the Intel Galileo with Windows send the command
+ // in the console: shutdown /s /t 0
+
+
+
+#include "stdafx.h"
+#include "arduino.h"
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    return RunArduinoSketch();
+}
+
+int led = 13;  // This is the pin the LED is attached to.
+
+void setup()
+{
+    // TODO: Add your code here
+    
+    pinMode(led, OUTPUT);       // Configure the pin for OUTPUT so you can turn on the LED.
+}
+
+// the loop routine runs over and over again forever:
+void loop()
+{
+    // TODO: Add your code here
+
+    digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
+    Log(L"LED APAGADO\n");
+    delay(100);               // wait for a second
+    digitalWrite(led, HIGH);   // turn the LED on by making the voltage HIGH
+    Log(L"LED ACESO\n");
+    delay(100);               // wait for a second
+}
