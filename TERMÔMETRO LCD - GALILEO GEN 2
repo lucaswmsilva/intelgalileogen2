@@ -1,0 +1,82 @@
+// TERMÔMETRO LCD- Intel Galileo GEN 2 - KIT GROVE SENSOR V2.0
+// ANALISA A TEMPERATURA DO SENSOR DE TEMPERATURA GROVE E CONVERTE A TEMPERATURA EM GRAUS CELSIU
+// MUDA A COR DO LED RGB DO LCD, SE TEMPERATURA MENOR QUE 22 GRAUS, LED LCD FICA AZUL (ESFRIANDO)
+// SE TEMPERATURA ENTRE 22 E 28 GRAUS, LED LCD FICA VERDE (TEMPERATURA AMBIENTE)
+// SE TEMPERATURA MAIOR QUE 28 GRAUS, LED LCD FICA VERMELHO (ESQUENTANDO)
+// EXIBE TAMBÉM NA PORTA SERIAL A TEMPERATURA AMBIENTE, SERIAL A 960O BAUD RATE
+
+//CODIGO CRIADO POR: ENGENHEIRO LUCAS MACEDO
+//EMAIL: LUCASWMSILVA@GMAIL.COM
+//FACEBOOK.COM/LUCASWMSILVA
+//MINHA PAGE NO FACEBOOK SOBRE INTEL GALILEO GEN 2:
+//https://www.facebook.com/intelgalileogen2?fref=ts
+
+
+
+#include <Wire.h>
+#include "rgb_lcd.h"
+
+rgb_lcd lcd;
+
+const int colorR = 255;
+const int colorG = 255;
+const int colorB = 255;
+const int colorRo = 0;
+const int colorGo = 0;
+const int colorBo = 0;
+
+
+const int pinTemp = A0;
+
+
+const int B = 3975;
+
+void setup()
+{
+  lcd.begin(16, 2);
+  
+    
+    Serial.begin(9600);
+}
+
+void loop()
+{
+    
+    int val = analogRead(pinTemp);
+
+    
+    float resistance = (float)(1023-val)*10000/val;
+
+    
+    float temperature = 1/(log(resistance/10000)/B+1/298.15)-273.15;
+    
+    if(temperature < 22){ //Verifica se a temperatura é maior que 20, e se for acende o Led Da Board do Arduino.
+      lcd.setRGB(colorRo, colorGo, colorB);
+}
+
+
+if (temperature >= 22 && temperature <= 28) {
+    lcd.setRGB(colorRo, colorG, colorBo);
+  }
+    
+    if(temperature > 28){ //Verifica se a temperatura é maior que 20, e se for acende o Led Da Board do Arduino.
+      lcd.setRGB(colorR, colorGo, colorBo);
+}
+
+
+
+
+
+    
+    Serial.println(temperature);
+    lcd.setCursor(0,0);
+    lcd.print("Graus Celsius");
+    lcd.setCursor(0,1);
+    lcd.print(temperature);
+    delay(500);
+    
+
+   
+    
+}
+
